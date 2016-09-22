@@ -12,6 +12,9 @@ import org.apache.commons.lang.Validate;
 import java.util.List;
 
 public class ExcelReader {
+    protected final int START_ROW_IDX = 1;
+    protected final int START_COLUMN_IDX = 1;
+
     protected Worksheet sheet;
     protected Cells cells;
     protected String sheetName;
@@ -29,43 +32,30 @@ public class ExcelReader {
         this.sheetName = sheetName;
     }
 
-    public Cell findFirstNonEmpty(int rowIdxStart, int colIdxStart) {
-        Cell firstCell = null;
-        int rowIdx = rowIdxStart;
-        int colIdx = colIdxStart;
-
-        while (rowIdx <= cells.getMaxRow() && (firstCell == null)) {
-            colIdx = colIdxStart;
-
-            while (colIdx <= cells.getMaxColumn() && (firstCell == null)) {
-                Cell cell = cells.get(rowIdx, colIdx);
-
-                if (cell != null) {
-                    String cellVal = cell.getStringValue();
-
-                    if (StringUtils.isNotBlank(cellVal)) {
-                        firstCell = cell;
-                    } else {
-                        colIdx++;
-                    }
-                }
-            }
-
-            rowIdx++;
-        }
-
-        return firstCell;
-    }
-
     public boolean verifyRowHeaders(List<ImportError> errors, String[] headers, int rowIdx, int colIdx) {
         int initialSize = errors.size();
 
-        for (int i = 0; i < headers.length; ++i) {
+        for (int i = 0; i < headers.length; i++) {
             Cell cell = cells.get(rowIdx + i, colIdx);
 
             if (!StringUtils.equalsIgnoreCase(headers[i], cell.getStringValue())) {
                 errors.add(ImportError.createError(ErrorCodes.INVALID_HEADER_VALUE, headers[i],
                         sheet.getName() + ":" + cell.getName()));
+            }
+        }
+
+        return (initialSize == errors.size());
+    }
+
+    public boolean verifyColumnHeaders(List<ImportError> errors, String[] headers, int rowIdx, int colIdx) {
+        int initialSize = errors.size();
+
+        for (int i = 0; i < headers.length; ++i) {
+            Cell cell = cells.get(rowIdx, colIdx + i);
+
+            if (!StringUtils.equalsIgnoreCase(headers[i], cell.getStringValue())) {
+                errors.add(ImportError.createError(ErrorCodes.INVALID_HEADER_VALUE, headers[i],
+                    sheet.getName() + ":" + cell.getName()));
             }
         }
 
