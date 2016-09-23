@@ -1,4 +1,4 @@
-package com.question;
+package com.question.common;
 
 import java.util.Arrays;
 

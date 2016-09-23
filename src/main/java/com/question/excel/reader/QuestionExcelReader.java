@@ -2,7 +2,7 @@ package com.question.excel.reader;
 
 import com.aspose.cells.Cell;
 import com.aspose.cells.Worksheet;
-import com.question.ImportError;
+import com.question.common.ImportError;
 import com.question.excel.ExcelConstants;
 import com.question.excel.importdata.AnswerImportData;
 import com.question.excel.importdata.ImportData;

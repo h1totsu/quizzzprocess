@@ -11,4 +11,6 @@ public interface ExcelConstants {
     String[] QUESTION_ROW_HEADERS = {"Display Type", "Correct Answers"};
     String[] ANSWER_ROW_HEADERS = {"Key", "Text"};
     String[] ANSWER_COLUMN_HEADERS = {"Answer Attributes"};
+
+    String[] QUESTION_DISPLAY_TYPES = {"Radio", "Checkbox", "Image"};
 }

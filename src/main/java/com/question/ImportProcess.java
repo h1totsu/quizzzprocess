@@ -2,21 +2,22 @@ package com.question;
 
 import com.aspose.cells.Workbook;
 import com.question.common.ErrorCodes;
+import com.question.common.ImportError;
 import com.question.excel.ExcelConstants;
 import com.question.excel.importdata.InfoImportData;
 import com.question.excel.importdata.QuestionImportData;
 import com.question.excel.importdata.QuizPackageData;
 import com.question.excel.reader.InfoExcelReader;
 import com.question.excel.reader.QuestionExcelReader;
-import com.question.validation.BasePackageValidator;
 import com.question.validation.InfoValidator;
 import org.apache.commons.lang.Validate;
 
 import java.io.InputStream;
 import java.util.List;
 
-public class ImportProcess {
+import static com.question.validation.PackageValidationHelper.verifySheetNames;
 
+public class ImportProcess {
 
     public QuizPackageData importExcel(InputStream is, List<ImportError> errors) {
         //TODO properties
@@ -27,7 +28,7 @@ public class ImportProcess {
         try {
             Workbook workbook = new Workbook(is);
 
-            if (BasePackageValidator.verifySheetNames(workbook, errors)) {
+            if (verifySheetNames(workbook, errors)) {
                 InfoExcelReader infoExcelReader = new InfoExcelReader(workbook.getWorksheets()
                     .get(ExcelConstants.INFO_SHEET));
                 InfoImportData infoImportData = infoExcelReader.getInfo(errors);
