@@ -1,12 +1,13 @@
 package com.question.excel.importdata;
 
-public class AnswerImportData {
+public class AnswerImportData implements BaseIndexedData {
   private ImportData key = new ImportData();
   private ImportData text = new ImportData();
 
   public AnswerImportData() {
   }
 
+  @Override
   public ImportData getKey() {
     return key;
   }

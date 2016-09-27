@@ -13,23 +13,24 @@ public class QuestionValidator {
 
 
     for (QuestionImportData questionImportData : questions) {
+      if (checkRequired(questionImportData.getKey(), errors)) {
+        checkAlphaNumeric(questionImportData.getKey(), errors);
+      }
 
-    }
+      checkRequired(questionImportData.getText(), errors);
 
-    return initErrorSize == errors.size();
-  }
+      if (checkRequired(questionImportData.getDisplayType(), errors)) {
+        checkDisplayType(questionImportData.getDisplayType(), errors);
+      }
 
-  public boolean validateQuestion(QuestionImportData questionImportData, List<ImportError> errors) {
-    int initErrorSize = errors.size();
+      if (checkRequired(questionImportData.getCorrectAnswers(), errors)) {
+        checkAnswersExist(questionImportData.getCorrectAnswers(),
+            questionImportData.getAnswers(), errors);
+      }
 
-    if (checkRequired(questionImportData.getKey(), errors)) {
-      checkAlphaNumeric(questionImportData.getKey(), errors);
-    }
+      AnswerValidator ansValidator = new AnswerValidator();
 
-    checkRequired(questionImportData.getText(), errors);
-
-    if (checkRequired(questionImportData.getDisplayType(), errors)) {
-      checkDisplayType(questionImportData.getDisplayType(), errors);
+      ansValidator.validateAnswers(questionImportData.getAnswers(), errors);
     }
 
     return initErrorSize == errors.size();

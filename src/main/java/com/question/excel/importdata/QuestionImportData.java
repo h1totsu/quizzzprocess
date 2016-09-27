@@ -3,7 +3,7 @@ package com.question.excel.importdata;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionImportData {
+public class QuestionImportData implements BaseIndexedData {
   private ImportData key = new ImportData();
   private ImportData text = new ImportData();
   private ImportData description = new ImportData();
@@ -14,6 +14,7 @@ public class QuestionImportData {
   public QuestionImportData() {
   }
 
+  @Override
   public ImportData getKey() {
     return key;
   }

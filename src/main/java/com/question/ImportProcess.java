@@ -10,6 +10,7 @@ import com.question.excel.importdata.QuizPackageData;
 import com.question.excel.reader.InfoExcelReader;
 import com.question.excel.reader.QuestionExcelReader;
 import com.question.validation.InfoValidator;
+import com.question.validation.QuestionValidator;
 import org.apache.commons.lang.Validate;
 
 import java.io.InputStream;
@@ -63,12 +64,14 @@ public class ImportProcess {
 
     private boolean validateData(
         InfoImportData infoImportData,
-        List<QuestionImportData> questionImportData,
+        List<QuestionImportData> questions,
         List<ImportError> errors) {
         int initErrorSize = errors.size();
 
         InfoValidator infoValidator = new InfoValidator();
         infoValidator.validateInfo(infoImportData, errors);
+        QuestionValidator questionValidator = new QuestionValidator();
+        questionValidator.validateQuestions(questions, errors);
 
         return initErrorSize == errors.size();
     }

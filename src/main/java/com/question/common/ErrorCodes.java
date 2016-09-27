@@ -14,5 +14,6 @@ public interface ErrorCodes {
 
     String INVALID_REFERENCE_ANSWER = "invalid.reference.answer";
     String INVALID_DISPLAY_TYPE = "invalid.display.type";
+    String INVALID_DUPLICATED_VALUE = "invalid.duplicated.value";
 
 }

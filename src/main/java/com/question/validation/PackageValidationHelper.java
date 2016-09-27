@@ -6,14 +6,12 @@ import com.question.common.ErrorCodes;
 import com.question.common.ImportError;
 import com.question.excel.ExcelConstants;
 import com.question.excel.importdata.AnswerImportData;
+import com.question.excel.importdata.BaseIndexedData;
 import com.question.excel.importdata.ImportData;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public abstract class PackageValidationHelper {
@@ -89,15 +87,34 @@ public abstract class PackageValidationHelper {
     String[] answersData = correctAnswers.getValue().split(SPLIT_ANSWERS_REGEX);
 
     for (String correctAnswer : answersData) {
-      Optional<AnswerImportData> answ = answers.stream()
+      Optional<AnswerImportData> answer = answers.stream()
           .filter(a -> a.getKey().getValue().equals(correctAnswer)).findFirst();
-      if (!answ.isPresent()) {
+      if (!answer.isPresent()) {
         isValid = false;
 
         ImportError error = new ImportError();
         error.setMessageKey(ErrorCodes.INVALID_REFERENCE_ANSWER);
         error.setMessageParams(new String[]{correctAnswers.getName(), correctAnswers.getSource(),
             correctAnswer});
+        errors.add(error);
+      }
+    }
+
+    return isValid;
+  }
+
+  public static boolean checkDuplicate(List<? extends BaseIndexedData> items, List<ImportError> errors) {
+    boolean isValid = true;
+
+    Set<BaseIndexedData> checkSet = new HashSet<>();
+
+    for (BaseIndexedData item : items) {
+      if (!checkSet.add(item)) {
+        isValid = false;
+
+        ImportError error = new ImportError();
+        error.setMessageKey(ErrorCodes.INVALID_DUPLICATED_VALUE);
+        error.setMessageParams(new String[]{item.getKey().getName(), item.getKey().getSource()});
         errors.add(error);
       }
     }
