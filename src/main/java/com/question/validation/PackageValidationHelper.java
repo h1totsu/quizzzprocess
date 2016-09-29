@@ -8,7 +8,6 @@ import com.question.excel.ExcelConstants;
 import com.question.excel.importdata.AnswerImportData;
 import com.question.excel.importdata.BaseIndexedData;
 import com.question.excel.importdata.ImportData;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 
 import java.util.*;
@@ -28,22 +27,6 @@ public abstract class PackageValidationHelper {
       ImportError error = new ImportError();
       error.setMessageKey(ErrorCodes.FIELD_REQUIRED);
       error.setMessageParams(new String[]{data.getName(), data.getSource()});
-      errors.add(error);
-    }
-
-    return isValid;
-  }
-
-  public static boolean checkUnique(ImportData data, Set<String> values, List<ImportError> errors) {
-    boolean isValid = true;
-    String val = data.getValue();
-
-    if (StringUtils.isNotBlank(val) && values.contains(val)) {
-      isValid = false;
-
-      ImportError error = new ImportError();
-      error.setMessageKey(ErrorCodes.FIELD_DUPLICATE);
-      error.setMessageParams(new String[]{data.getName(), data.getSource(), val});
       errors.add(error);
     }
 
@@ -103,18 +86,19 @@ public abstract class PackageValidationHelper {
     return isValid;
   }
 
-  public static boolean checkDuplicate(List<? extends BaseIndexedData> items, List<ImportError> errors) {
+    public static boolean checkUnique(List<? extends BaseIndexedData> items, List<ImportError> errors) {
     boolean isValid = true;
 
-    Set<BaseIndexedData> checkSet = new HashSet<>();
+        Set<ImportData> checkSet = new HashSet<>();
 
     for (BaseIndexedData item : items) {
-      if (!checkSet.add(item)) {
+        if (!checkSet.add(item.getKey())) {
         isValid = false;
 
         ImportError error = new ImportError();
         error.setMessageKey(ErrorCodes.INVALID_DUPLICATED_VALUE);
-        error.setMessageParams(new String[]{item.getKey().getName(), item.getKey().getSource()});
+            error.setMessageParams(new String[]{item.getKey().getName(), item.getKey().getSource(),
+                    item.getKey().getValue()});
         errors.add(error);
       }
     }
