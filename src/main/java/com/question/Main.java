@@ -2,6 +2,7 @@ package com.question;
 
 
 import com.question.common.ImportError;
+import com.question.excel.importdata.ImportData;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,5 +18,16 @@ public class Main {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        ImportData data1 = new ImportData();
+        ImportData data2 = new ImportData();
+
+        data1.setName("C1");
+        data1.setValue("Value1");
+
+        data2.setName("C1");
+        data2.setValue("Value1");
+
+        System.out.println(data1.equals(data2));
     }
 }

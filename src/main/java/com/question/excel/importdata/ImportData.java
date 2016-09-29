@@ -1,6 +1,8 @@
 package com.question.excel.importdata;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 public class ImportData {
     private String name;
@@ -44,5 +46,26 @@ public class ImportData {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ImportData that = (ImportData) o;
+
+        return new EqualsBuilder()
+                .append(name, that.getName())
+                .append(value, that.getValue())
+                .isEquals();
+
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(name).append(value)
+                .toHashCode();
     }
 }
